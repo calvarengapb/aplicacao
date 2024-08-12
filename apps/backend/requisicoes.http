@@ -1,0 +1,15 @@
+### cadastrar cliente
+POST http://localhost:3000/cliente/teste
+content-type: application/json
+
+{
+    "nome": "tes",
+    "fantasia": "fantasia teste 1",
+    "telefone": "(83)99999-8888",
+    "tipoJuridico": 1,
+    "cnpjCpf": "98765432100",
+    "inscricaoEstadual": "1234567"
+}
+
+### buscar clientes
+GET http://localhost:3000/cliente
