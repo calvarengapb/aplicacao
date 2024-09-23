@@ -1,0 +1,23 @@
+### GET clientes
+GET http://localhost:3000/clientes
+
+### GET endereços do cliente
+GET http://localhost:3000/clientes/a/enderecos
+
+
+### GET Tipo Juridico
+GET http://localhost:3000/clientes/tipo-endereco
+
+### POST Salvar cliente
+POST http://localhost:3000/clientes
+Content-Type: application/json
+
+{
+    "empresa": 1,
+    "razaoSocial": "Razao da empresa Teste",
+    "nomeFantasia": "Empresa Teste",
+    "telefone": "(83)98765-4321",
+    "cpfCnpj": "047.218.224-21",
+    "inscricaoEstadual": "",
+    "tipoJuridico": "F"
+}
