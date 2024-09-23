@@ -8,18 +8,9 @@ import { Endereco } from './domain/Endereco';
 import { Cep } from './domain/Cep';
 import { EnderecoService } from './endereco.service';
 import TipoEndereco from './domain/genericas/TipoEndereco';
-import TipoJuridico from './domain/genericas/TipoJuridico';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      Cliente,
-      Endereco,
-      Cep,
-      TipoEndereco,
-      TipoJuridico,
-    ]),
-  ],
+  imports: [TypeOrmModule.forFeature([Cliente, Endereco, Cep, TipoEndereco])],
   providers: [ClientesService, ClientesMiddleware, EnderecoService],
   controllers: [ClientesController],
   exports: [ClientesMiddleware],
