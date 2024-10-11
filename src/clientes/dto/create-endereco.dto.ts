@@ -1,29 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsInt,
   IsNotEmpty,
   IsOptional,
-  IsPositive,
   IsPostalCode,
   Length,
   MaxLength,
 } from 'class-validator';
+import { Endereco } from '../entities/endereco.entity';
 
-export class CreateEnderecoDto {
-  @ApiProperty({
-    description: 'Código do Cliente',
-    format: '99999',
-    required: false,
-  })
-  @IsOptional()
-  @IsPositive({
-    message: 'Informe um Código de cliente válido.',
-  })
-  @IsInt({
-    message: 'Informe um Código de cliente válido.',
-  })
-  clieCliId: number;
-
+export class CreateEnderecoDto extends Endereco {
   @ApiProperty({
     description: 'CEP do logradouro',
     format: '99999-999',

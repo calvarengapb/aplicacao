@@ -1,6 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Endereco } from './endereco.entity';
-import { CreateClienteDto } from '../dto/create-cliente.dto';
 
 @Entity({ name: 'CLIENTE' })
 export class Cliente {
@@ -19,8 +18,4 @@ export class Cliente {
     cascade: true,
   })
   enderecos: Endereco[];
-
-  constructor(clienteDto: CreateClienteDto) {
-    Object.assign(this, clienteDto);
-  }
 }

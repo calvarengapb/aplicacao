@@ -1,30 +1,29 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
 import { Cliente } from './entities/cliente.entity';
 import { Endereco } from './entities/endereco.entity';
-import { EntityManager, Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 import { CreateEnderecoDto } from './dto/create-endereco.dto';
 import { UpdateEnderecoDto } from './dto/update-endereco.dto';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ClientesService {
   constructor(
-    @InjectRepository(Cliente)
+    @Inject('CLIENTE_REPOSITORY')
     private readonly clienteRepository: Repository<Cliente>,
-    @InjectRepository(Endereco)
+    @Inject('ENDERECO_REPOSITORY')
     private readonly enderecoRepository: Repository<Endereco>,
-    private readonly entityManager: EntityManager,
   ) {}
 
   async create(createClienteDto: CreateClienteDto) {
-    const cliente = new Cliente(createClienteDto);
-    const enderecos = createClienteDto.enderecos.map(
-      (createEnderecoDto) => new Endereco(createEnderecoDto),
+    const cliente = new Cliente();
+    Object.assign(cliente, createClienteDto);
+    const enderecos = createClienteDto.enderecos.map((createEnderecoDto) =>
+      Object.assign(new Endereco(), createEnderecoDto),
     );
     cliente.enderecos = enderecos;
-    return await this.entityManager.save(cliente);
+    return await this.clienteRepository.save(cliente);
   }
 
   findAll() {
@@ -50,7 +49,7 @@ export class ClientesService {
   }
 
   async remove(id: number) {
-    return await this.entityManager.delete(Cliente, id);
+    return await this.clienteRepository.delete(id);
   }
 
   async adicionarEndereco(pCliId: number, pEndereco: CreateEnderecoDto) {
@@ -59,9 +58,16 @@ export class ClientesService {
     ) {
       throw new NotFoundException('O CLiente informado não existe');
     }
-    pEndereco.clieCliId = pCliId;
-    const endereco = new Endereco(pEndereco);
-    return await this.entityManager.save(endereco);
+    const endereco = new Endereco();
+    Object.assign(endereco, pEndereco);
+    //const cliente = new Cliente();
+    endereco.clieCliId = await this.clienteRepository.findOne({
+      select: {
+        cliId: true,
+      },
+      where: { cliId: pCliId },
+    });
+    return await this.enderecoRepository.save(endereco);
   }
 
   async atualizarEndereco(
@@ -80,7 +86,8 @@ export class ClientesService {
       where: { clieCliId: { cliId: pCliId }, cliEndId: pCliEndId },
     });
     Object.assign(endereco, pEndereco);
-    return await this.entityManager.save(endereco);
+    await this.enderecoRepository.save(endereco);
+    return endereco;
   }
 
   async deletarEndereco(pCliId: number, pCliEndId: number) {
@@ -94,6 +101,6 @@ export class ClientesService {
     const endereco = await this.enderecoRepository.findOne({
       where: { clieCliId: { cliId: pCliId }, cliEndId: pCliEndId },
     });
-    return await this.entityManager.delete(Endereco, endereco.cliEndId);
+    return await this.enderecoRepository.delete(endereco.cliEndId);
   }
 }

@@ -9,8 +9,10 @@ import { CreateEnderecoDto } from './create-endereco.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsCPFOrCNPJ } from 'validator-br-nestjs';
 import { Type } from 'class-transformer';
+import { Cliente } from '../entities/cliente.entity';
+import { Endereco } from '../entities/endereco.entity';
 
-export class CreateClienteDto {
+export class CreateClienteDto extends Cliente {
   @ApiProperty({
     description: 'Razao social do cliente',
     example: 'JOSE ALVES DA SILVA',
@@ -63,5 +65,5 @@ export class CreateClienteDto {
   })
   @ValidateNested({ each: true })
   @Type(() => CreateEnderecoDto)
-  enderecos: CreateEnderecoDto[];
+  enderecos: Endereco[];
 }

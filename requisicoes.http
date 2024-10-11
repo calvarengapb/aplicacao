@@ -3,7 +3,7 @@ GET http://localhost:3000/clientes
 
 
 ### GET todos os dados do cliente
-GET http://localhost:3000/clientes/2
+GET http://localhost:3000/clientes/7
 
 ### POST Salvar cliente 1
 POST http://localhost:3000/clientes
@@ -27,7 +27,7 @@ Content-Type: application/json
 }
 
 ### POST Adicionar um endereço de um Cliente
-POST http://localhost:3000/clientes/1/enderecos
+POST http://localhost:3000/clientes/7/enderecos
 Content-Type: application/json
 
 {
@@ -41,18 +41,18 @@ Content-Type: application/json
 }
 
 ### PATCH Alterar um endereço de um Cliente
-PATCH http://localhost:3000/clientes/1/enderecos
+PATCH http://localhost:3000/clientes/7/enderecos/15
 Content-Type: application/json
 
 {
-    "clieCep": "58071-400",
-    "clieLogradouro": "RUA JOAO PE DE FEIJAO",
-    "clieNumero": "1066/3",
-    "clieBairro": "RIO DO CENTRO",
+    "clieCep": "58993-000",
+    "clieLogradouro": "RUA MARIA DA GUIA",
+    "clieNumero": "1999",
+    "clieBairro": "CENTRO",
     "clieCidade": "BARRA FUNDA",
-    "clieUF": "PB",
-    "clieReferencia": null
+    "clieUF": "SP",
+    "clieReferencia": "PROXIMO AO MERCADO CENTRAL"
 }
 
 ### POST Deletar um endereço de um Cliente
-DELETE http://localhost:3000/clientes/1/enderecos/3
+DELETE http://localhost:3000/clientes/7/enderecos/15

@@ -6,7 +6,6 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Cliente } from './cliente.entity';
-import { CreateEnderecoDto } from '../dto/create-endereco.dto';
 
 @Entity({ name: 'CLIENTE_E' })
 export class Endereco {
@@ -40,8 +39,4 @@ export class Endereco {
 
   @Column({ name: 'CLIE_REFERENCIA', length: 120, nullable: true })
   clieReferencia?: string;
-
-  constructor(enderecoDto: CreateEnderecoDto) {
-    Object.assign(this, enderecoDto);
-  }
 }
