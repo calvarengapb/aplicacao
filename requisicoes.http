@@ -1,23 +1,58 @@
-### GET clientes
+### GET buscar dados basicos de todos os cliente
 GET http://localhost:3000/clientes
 
-### GET endereços do cliente
-GET http://localhost:3000/clientes/a/enderecos
 
+### GET todos os dados do cliente
+GET http://localhost:3000/clientes/2
 
-### GET Tipo Juridico
-GET http://localhost:3000/clientes/tipo-endereco
-
-### POST Salvar cliente
+### POST Salvar cliente 1
 POST http://localhost:3000/clientes
 Content-Type: application/json
 
 {
-    "empresa": 1,
-    "razaoSocial": "Razao da empresa Teste",
-    "nomeFantasia": "Empresa Teste",
-    "telefone": "(83)98765-4321",
-    "cpfCnpj": "047.218.224-21",
-    "inscricaoEstadual": "",
-    "tipoJuridico": "F"
+    "cliRazaoSocial": "Razao da empresa Teste",
+    "cliNomeFantasia": "Empresa Teste",
+    "cliTelefone": "(83) 98765-4321",
+    "cliDocumento": "12.597.356/0001-33",
+    "enderecos": [
+        {
+            "clieCep": "58071-400",
+            "clieLogradouro": "RUA JOAO PE DE FEIJAO",
+            "clieNumero": "1066/3",
+            "clieBairro": "CENTRO",
+            "clieCidade": "BARRA FUNDA",
+            "clieUF": "SP"
+        }
+    ]
 }
+
+### POST Adicionar um endereço de um Cliente
+POST http://localhost:3000/clientes/1/enderecos
+Content-Type: application/json
+
+{
+    "clieCep": "58071-400",
+    "clieLogradouro": "RUA JOAO PE DE FEIJAO",
+    "clieNumero": "1066/3",
+    "clieBairro": "RIO DO CENTRO",
+    "clieCidade": "BARRA FUNDA",
+    "clieUF": "PB",
+    "clieReferencia": null
+}
+
+### PATCH Alterar um endereço de um Cliente
+PATCH http://localhost:3000/clientes/1/enderecos
+Content-Type: application/json
+
+{
+    "clieCep": "58071-400",
+    "clieLogradouro": "RUA JOAO PE DE FEIJAO",
+    "clieNumero": "1066/3",
+    "clieBairro": "RIO DO CENTRO",
+    "clieCidade": "BARRA FUNDA",
+    "clieUF": "PB",
+    "clieReferencia": null
+}
+
+### POST Deletar um endereço de um Cliente
+DELETE http://localhost:3000/clientes/1/enderecos/3

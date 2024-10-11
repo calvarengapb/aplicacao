@@ -1,22 +1,13 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ClientesService } from './clientes.service';
 import { ClientesController } from './clientes.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Cliente } from './domain/cliente';
-import { ClientesMiddleware } from './clientes.middleware';
-import { Endereco } from './domain/Endereco';
-import { Cep } from './domain/Cep';
-import { EnderecoService } from './endereco.service';
-import TipoEndereco from './domain/genericas/TipoEndereco';
+import { Cliente } from './entities/cliente.entity';
+import { Endereco } from './entities/endereco.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Cliente, Endereco, Cep, TipoEndereco])],
-  providers: [ClientesService, ClientesMiddleware, EnderecoService],
+  imports: [TypeOrmModule.forFeature([Cliente, Endereco])],
   controllers: [ClientesController],
-  exports: [ClientesMiddleware],
+  providers: [ClientesService],
 })
-export class ClientesModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(ClientesMiddleware).forRoutes(ClientesController);
-  }
-}
+export class ClientesModule {}

@@ -1,24 +1,20 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ClientesModule } from './clientes/clientes.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Cliente } from './clientes/domain/cliente';
-import { Endereco } from './clientes/domain/Endereco';
-import TipoEndereco from './clientes/domain/genericas/TipoEndereco';
-import { Cep } from './clientes/domain/Cep';
+import { ClientesModule } from './clientes/clientes.module';
+import { Cliente } from './clientes/entities/cliente.entity';
+import { Endereco } from './clientes/entities/endereco.entity';
 
 @Module({
   imports: [
-    ClientesModule,
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db/sql.db',
-      entities: [Cliente, Endereco, TipoEndereco, Cep],
+      entities: [Cliente, Endereco],
       synchronize: true,
     }),
+    ClientesModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

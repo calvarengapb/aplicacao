@@ -1,65 +1,99 @@
 import {
-  Body,
   Controller,
   Get,
-  HttpStatus,
-  Param,
-  ParseIntPipe,
   Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
-import { Cliente } from './domain/cliente';
 import { ClientesService } from './clientes.service';
-import { EmpresaLogada } from './decorators/ClienteDecorators';
-import { CreateClienteDto } from './domain/dto/Create-Cliente-DTO';
-import { ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { EnderecoService } from './endereco.service';
+import { CreateClienteDto } from './dto/create-cliente.dto';
+import { UpdateClienteDto } from './dto/update-cliente.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CreateEnderecoDto } from './dto/create-endereco.dto';
+import { UpdateEnderecoDto } from './dto/update-endereco.dto';
 
 @ApiTags('Clientes')
-@ApiHeader({
-  name: 'Clientes',
-  description: 'Custom header',
-})
 @Controller('clientes')
 export class ClientesController {
-  constructor(
-    private readonly clienteService: ClientesService,
-    private readonly enderecoService: EnderecoService,
-  ) {}
+  constructor(private readonly clientesService: ClientesService) {}
 
-  @Get()
-  @ApiOperation({ summary: 'Buscar todos os clientes' })
-  findAll(@EmpresaLogada() empresa: number): Promise<Cliente[]> {
-    console.log('get: ' + empresa);
-    return this.clienteService.findAll(empresa);
-  }
-
-  @Get('/tipo-endereco')
-  findTipoEndereco(@EmpresaLogada() empresa: number) {
-    return this.enderecoService.buscarTipoDeEndereco(empresa, 2);
-  }
-
-  @Get(':cli_Id/enderecos')
-  buscarEnderecosPorCliente(
-    //@Body() enderecoDto: CreateEnderecoDto,
-    @EmpresaLogada() pEmpresa: number,
-    @Param(
-      'cli_Id',
-      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
-    )
-    pCodCliente: number,
-  ) {
-    console.log(typeof pCodCliente);
-    //if (pCodCliente.valueOf !== 'number')
-    //  throw new BadRequestException('Erro ao buscar dados!');
-
-    //return this.enderecoService.findEnderecoByCliente(pEmpresa, pCodCliente);
-  }
-
+  @ApiOperation({
+    summary: 'endpoint para salvar o cadastro do Cliente',
+  })
   @Post()
-  async salvarCliente(
-    @Body() clienteDTO: CreateClienteDto,
-    @EmpresaLogada() empresa: number,
+  create(@Body() createClienteDto: CreateClienteDto) {
+    return this.clientesService.create(createClienteDto);
+  }
+
+  @ApiOperation({
+    summary: 'endpoint para buscar os dados basicos de todos os Cliente',
+  })
+  @Get()
+  findAll() {
+    return this.clientesService.findAll();
+  }
+
+  @ApiOperation({
+    summary: 'endpoint para buscar o cadastro detalhado do Cliente pelo Id',
+  })
+  @Get(':id')
+  findOne(@Param('id', ParseIntPipe) id: string) {
+    return this.clientesService.findOne(+id);
+  }
+
+  @ApiOperation({
+    summary: 'endpoint usado para atualizar o cadastro do cliente pelo ID',
+  })
+  @Patch(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateClienteDto: UpdateClienteDto,
   ) {
-    return await this.clienteService.save(empresa, clienteDTO);
+    return this.clientesService.update(+id, updateClienteDto);
+  }
+
+  @ApiOperation({
+    summary: 'endpoint usado para deletar o cadastro do cliente pelo ID',
+  })
+  @Delete(':id')
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.clientesService.remove(+id);
+  }
+
+  @ApiOperation({
+    summary: 'Endpoint para adicionar um endereço a um cliente',
+  })
+  @Post(':cliId/enderecos')
+  async adicionarEndereco(
+    @Param('cliId', ParseIntPipe) cliId: number,
+    @Body() endereco: CreateEnderecoDto,
+  ) {
+    return this.clientesService.adicionarEndereco(cliId, endereco);
+  }
+
+  @ApiOperation({
+    summary: 'Endpoint para alterar um endereço de um cliente',
+  })
+  @Patch(':cliId/enderecos/:clieId')
+  async atualizarEndereco(
+    @Param('cliId', ParseIntPipe) cliId: number,
+    @Param('clieId', ParseIntPipe) clieId: number,
+    @Body() endereco: UpdateEnderecoDto,
+  ) {
+    return this.clientesService.atualizarEndereco(cliId, clieId, endereco);
+  }
+
+  @ApiOperation({
+    summary: 'Endpoint para Deletar um endereço de um cliente',
+  })
+  @Delete(':cliId/enderecos/:clieId')
+  async deletarEndereco(
+    @Param('cliId', ParseIntPipe) cliId: number,
+    @Param('clieId', ParseIntPipe) clieId: number,
+  ) {
+    return this.clientesService.deletarEndereco(cliId, clieId);
   }
 }
