@@ -3,7 +3,7 @@ GET http://localhost:3000/clientes
 
 
 ### GET todos os dados do cliente
-GET http://localhost:3000/clientes/7
+GET http://localhost:3000/clientes/8
 
 ### POST Salvar cliente 1
 POST http://localhost:3000/clientes
@@ -26,8 +26,12 @@ Content-Type: application/json
     ]
 }
 
+
+### DELETE deletar um Cliente pelo ID
+DELETE http://localhost:3000/clientes/7
+
 ### POST Adicionar um endereço de um Cliente
-POST http://localhost:3000/clientes/7/enderecos
+POST http://localhost:3000/clientes/8/enderecos
 Content-Type: application/json
 
 {
@@ -41,7 +45,7 @@ Content-Type: application/json
 }
 
 ### PATCH Alterar um endereço de um Cliente
-PATCH http://localhost:3000/clientes/7/enderecos/15
+PATCH http://localhost:3000/clientes/8/enderecos/17
 Content-Type: application/json
 
 {
@@ -55,4 +59,4 @@ Content-Type: application/json
 }
 
 ### POST Deletar um endereço de um Cliente
-DELETE http://localhost:3000/clientes/7/enderecos/15
+DELETE http://localhost:3000/clientes/8/enderecos/18

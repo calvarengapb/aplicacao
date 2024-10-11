@@ -13,7 +13,7 @@ export class Endereco {
   cliEndId: number;
 
   @ManyToOne(() => Cliente, (cliente) => cliente.enderecos, {
-    onDelete: 'NO ACTION',
+    onDelete: 'CASCADE',
     nullable: false,
   })
   @JoinColumn({ name: 'CLIE_CLI_ID' })
